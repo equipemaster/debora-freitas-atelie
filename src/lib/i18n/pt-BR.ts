@@ -126,6 +126,21 @@ export const ptBR = {
     requestChanges: "Pedir ajustes",
     addComment: "Comentar",
     commentAtTime: "Comentar neste ponto do vídeo",
+    loading: "Carregando revisão…",
+    notFound: "Não encontramos esse link de revisão.",
+    expired: "Este link de revisão expirou. Peça um novo link ao ateliê.",
+    videoNotReady:
+      "O vídeo ainda está sendo preparado pelo ateliê. Volte em alguns instantes.",
+    yourName: "Seu nome",
+    commentPlaceholder: "Escreva seu comentário…",
+    commentsTitle: "Comentários",
+    noComments: "Ainda não há comentários. Seja a primeira a comentar.",
+    commentsDisabled: "Comentários desativados neste link.",
+    send: "Enviar",
+    sending: "Enviando…",
+    noteOptional: "Observação (opcional)",
+    decisionRecorded: "Recebemos sua resposta. Obrigado!",
+    tryAgain: "Tentar novamente",
   },
 
   errors: {
