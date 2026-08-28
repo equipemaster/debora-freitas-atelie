@@ -148,6 +148,30 @@ export const ptBR = {
     uploadFailed: "Não foi possível enviar o arquivo.",
     renderFailed: "A exportação falhou. Veja os detalhes e tente de novo.",
   },
+
+  // Login sem senha (magic link) e bootstrap do primeiro acesso.
+  auth: {
+    title: "Entrar",
+    subtitle: "Digite seu e-mail. Enviamos um link de acesso — sem senha para lembrar.",
+    emailLabel: "E-mail",
+    emailPlaceholder: "voce@seuemail.com",
+    sendLink: "Enviar link de acesso",
+    sending: "Enviando…",
+    checkEmailTitle: "Verifique seu e-mail",
+    checkEmailBody: "Enviamos um link de acesso. Abra-o neste mesmo navegador para entrar.",
+    invalidEmail: "Digite um e-mail válido.",
+    signOut: "Sair",
+  },
+
+  onboarding: {
+    title: "Bem-vinda!",
+    subtitle: "Só mais um passo antes de começar: como devemos te chamar?",
+    nameLabel: "Seu nome",
+    namePlaceholder: "Nome completo",
+    continue: "Continuar",
+    nudge: "Complete seu perfil",
+    nudgeAction: "Adicionar meu nome",
+  },
 } as const;
 
 export type Dictionary = typeof ptBR;
