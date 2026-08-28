@@ -346,32 +346,37 @@ pnpm lint        pnpm typecheck
 ### Resolvidas
 
 1. **Export do MVP:** `ffmpeg.wasm`.
-2. **Backend:** Supabase. **Projeto próprio e isolado** (não reaproveita o projeto
-   `gestao-de-projetos-resitrat`, que é produção ativa de outro sistema na mesma
-   organização `equipemaster's Org` e colidiria de nome em `public.projects`/
-   `public.clients`/`public.activity_log`). **A cliente vai criar o projeto Supabase
-   manualmente e repassar URL + chaves** — ver pendência na seção 11.
-3. **Região do Supabase:** `sa-east-1` (São Paulo) — a mais próxima de Aparecida de
-   Goiânia/GO disponível (Supabase não tem datacenter em Goiás).
-4. **Código-fonte:** GitHub, sob a conta/organização **`equipemaster`**.
-5. **Deploy:** Vercel conectado ao repositório do GitHub (build automático a cada
-   push na branch principal) — a confirmar se `equipemaster` já tem conta Vercel.
-6. **Edição semi-automática:** o Modo Assistido pergunta **take** (quando há mais de
-   uma gravação da mesma cena) e **música**, e monta a timeline sozinho — ver seção 7.
+2. **Backend:** Supabase. **Projeto próprio e isolado**, criado pela cliente em
+   `equipemaster's Org` — não reaproveita `gestao-de-projetos-resitrat` (produção
+   ativa de outro sistema, colidiria de nome em `public.projects`/`clients`/
+   `activity_log`).
+   - **Projeto:** `debora-freitas-atelie` · ref `mfrveapsshbbglmkknqy` · região
+     **`us-east-1`** (Virgínia do Norte) — não `sa-east-1`/São Paulo como
+     planejado; o projeto já foi criado assim pelo painel da cliente. Recriar na
+     região certa exigiria apagar e refazer (ainda sem dados) — decisão de custo
+     x latência fica com a cliente; por ora seguimos com `us-east-1`.
+   - **Migrations aplicadas:** `0001_init` (schema completo) e
+     `0002_security_hardening` (corrige avisos do linter — search_path fixo em
+     `touch_updated_at`, `auth_org_ids`/`auth_has_role` sem RPC pública). Dois
+     avisos residuais aceitos: as duas funções continuam chamáveis por usuários
+     autenticados via RPC — necessário para as policies de RLS funcionarem, e
+     inofensivo (só devolvem a própria org do usuário).
+   - **`.env.local`** já preenchido com URL + chave publicável reais (arquivo
+     git-ignorado). `service_role` **não** foi buscada nem armazenada — só entra
+     manualmente se/quando alguma rota de servidor precisar dela.
+3. **Código-fonte:** GitHub, `github.com/equipemaster/debora-freitas-atelie` —
+   repositório criado pela cliente, remoto conectado, branch `main` já com push
+   (scaffold + as duas migrations acima).
+4. **Deploy:** Vercel conectado ao repositório do GitHub (a confirmar se
+   `equipemaster` já tem conta Vercel — ver pendência).
+5. **Edição semi-automática:** o Modo Assistido pergunta **take** (quando há mais
+   de uma gravação da mesma cena) e **música**, e monta a timeline sozinho — ver
+   seção 7.
 
 ### Ainda em aberto
 
-1. **Repositório GitHub:** este ambiente não tem `gh` CLI instalado nem conector
-   GitHub disponível — não consigo criar o repositório sozinho. **Ação da sua
-   parte:** criar um repositório vazio em `github.com/equipemaster/`
-   (proposta de nome: `debora-freitas-atelie`, **privado** por padrão) e me passar a
-   URL — eu conecto o remoto local e faço o primeiro push.
-2. **Projeto Supabase:** você vai criar manualmente (região São Paulo/`sa-east-1`,
-   organização `equipemaster's Org` ou outra dedicada) e me repassar
-   `NEXT_PUBLIC_SUPABASE_URL`, a chave publicável (anon/publishable) e a
-   `service_role` key (esta última nunca deve ir para o repositório — só
-   `.env.local`, que fica no `.gitignore`). Até lá, sigo o scaffold do app com
-   variáveis de ambiente de exemplo, sem banco real.
+1. **Deploy na Vercel:** conectar o repositório e configurar as env vars lá
+   (mesmas de `.env.local`, sem a `service_role` no client).
 2. **Legendas automáticas:** provedor de transcrição não definido (Whisper/OpenAI?
    modelo local?). Nenhum provedor de LLM foi escolhido ainda.
 3. **Versão preta do logo:** o arquivo enviado é branco sobre transparente; vou
@@ -390,7 +395,17 @@ pnpm lint        pnpm typecheck
 - [x] Requisitos coletados (cores: preto e branco; 4 casos de uso priorizados;
       edição semi-automática por take/música).
 - [x] `CLAUDE.md` (este documento).
-- [x] Infra decidida: Supabase (`sa-east-1`, projeto isolado), GitHub (`equipemaster`), Vercel.
-- [ ] Repositório GitHub criado (pendente: você cria e me passa a URL) e primeiro push.
-- [ ] Projeto Supabase criado (pendente: você cria e me passa URL + chaves) + migrations aplicadas.
-- [ ] Fase 0 — Fundação (scaffold Next.js) — em andamento.
+- [x] Infra decidida: Supabase (projeto isolado), GitHub (`equipemaster`), Vercel.
+- [x] Repositório GitHub criado e primeiro push (`main`, 3 commits).
+- [x] Projeto Supabase criado (`mfrveapsshbbglmkknqy`, `us-east-1`) + migrations
+      `0001_init` e `0002_security_hardening` aplicadas; advisors de segurança
+      revisados.
+- [x] Fase 0 — Fundação: scaffold Next.js 16 + design system P&B + i18n +
+      páginas de gestão (placeholders didáticos) + schema Supabase — feito por
+      outra sessão em paralelo (`samsung-11`), coordenado com esta sessão.
+- [ ] Deploy Vercel.
+- [ ] Fase 1 — Biblioteca (upload real para Storage, CRUD de projetos/clientes).
+- [ ] `components/editor/*` (Timeline/Preview/MediaBin/GuidedMode) — em andamento
+      por `samsung-11`.
+- [ ] `supabase/functions/review-access` + fluxo de auth/onboarding — próximo
+      passo desta sessão.
