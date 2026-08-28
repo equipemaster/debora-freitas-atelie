@@ -34,6 +34,14 @@ yarn-error.log*
 .env*
 !.env*.example
 
+# segredos soltos na raiz — nunca versionar (senhas, chaves, credenciais)
+senha*
+*senha*
+*password*
+*credencia*
+*.docx
+*.doc
+
 # vercel
 .vercel
 

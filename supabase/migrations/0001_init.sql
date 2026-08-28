@@ -240,27 +240,39 @@ create policy profiles_self_update on profiles for update
 create policy orgs_read on organizations for select
   using (id in (select auth_org_ids()));
 
--- macro simples: uma policy "membro da org" por tabela escopada
+-- macro simples: uma policy "membro da org" por tabela escopada.
+-- Duas famílias de tabela, cada uma só referencia colunas que de fato tem:
+--   A) tem org_id direto: brand_kits, clients, collections, projects,
+--      media_assets, templates
+--   B) só tem project_id (organização vem da tabela `projects`):
+--      renders, review_links, comments, approvals
 do $$
 declare tbl text;
 begin
   foreach tbl in array array[
-    'brand_kits','clients','collections','projects','media_assets',
-    'templates','renders','review_links','comments','approvals'
+    'brand_kits','clients','collections','projects','media_assets','templates'
+  ] loop
+    execute format($f$
+      create policy %1$s_org_all on %1$s for all
+        using (org_id in (select auth_org_ids()))
+        with check (org_id in (select auth_org_ids()));
+    $f$, tbl);
+  end loop;
+
+  foreach tbl in array array[
+    'renders','review_links','comments','approvals'
   ] loop
     execute format($f$
       create policy %1$s_org_all on %1$s for all
         using (
-          org_id in (select auth_org_ids())
-          or exists (select 1 from projects p
-                     where p.id = %1$s.project_id
-                       and p.org_id in (select auth_org_ids()))
+          exists (select 1 from projects p
+                  where p.id = %1$s.project_id
+                    and p.org_id in (select auth_org_ids()))
         )
         with check (
-          org_id in (select auth_org_ids())
-          or exists (select 1 from projects p
-                     where p.id = %1$s.project_id
-                       and p.org_id in (select auth_org_ids()))
+          exists (select 1 from projects p
+                  where p.id = %1$s.project_id
+                    and p.org_id in (select auth_org_ids()))
         );
     $f$, tbl);
   end loop;
