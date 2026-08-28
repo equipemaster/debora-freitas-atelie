@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+# gerenciador de pacotes: pnpm (ver CLAUDE.md §3). npm/yarn lockfiles não entram.
+package-lock.json
+yarn.lock
 /.pnp
 .pnp.*
 .yarn/*
