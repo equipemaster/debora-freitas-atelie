@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Débora Freitas Ateliê — sistema de design
+   Paleta da marca: preto e branco. Sem cor de acento.
+   Hierarquia por peso tipográfico, escala, filetes de 1px e inversão.
+   ========================================================================== */
+
+:root {
+  /* superfícies claras (telas de gestão) */
+  --paper: #fafaf8;
+  --paper-block: #f1efea;
+  --ink: #0a0a0a;
+  --ink-pure: #000000;
+  --white-pure: #ffffff;
+
+  /* escala de cinza */
+  --gray-900: #141414;
+  --gray-800: #1f1f1f;
+  --gray-700: #2e2e2e;
+  --gray-500: #6b6b6b;
+  --gray-300: #c9c7c2;
+  --gray-200: #e4e2dd;
+  --gray-100: #f1efea;
+
+  /* superfícies do editor ("câmara escura") */
+  --surface-editor: #0f0f0f;
+  --surface-editor-panel: #1f1f1f;
+  --surface-editor-border: #2e2e2e;
+
+  /* exceção documentada ao P&B: só erro / ação destrutiva */
+  --danger: #b4231f;
+
+  /* semânticos (modo claro é o padrão) */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --muted: var(--gray-500);
+  --border: var(--gray-200);
+  --block: var(--paper-block);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-pure: var(--ink-pure);
+  --color-white-pure: var(--white-pure);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-block: var(--block);
+  --color-danger: var(--danger);
+
+  --color-gray-900: var(--gray-900);
+  --color-gray-800: var(--gray-800);
+  --color-gray-700: var(--gray-700);
+  --color-gray-500: var(--gray-500);
+  --color-gray-300: var(--gray-300);
+  --color-gray-200: var(--gray-200);
+  --color-gray-100: var(--gray-100);
+
+  --color-editor: var(--surface-editor);
+  --color-editor-panel: var(--surface-editor-panel);
+  --color-editor-border: var(--surface-editor-border);
+
+  /* famílias tipográficas — variáveis definidas em layout.tsx via next/font */
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+}
+
+/* O editor é uma zona escura fixa, independente do tema do sistema. */
+.editor-surface {
+  --background: var(--surface-editor);
+  --foreground: var(--white-pure);
+  --muted: var(--gray-300);
+  --border: var(--surface-editor-border);
+  --block: var(--surface-editor-panel);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* rótulos de seção em versalete/caixa alta, ecoando o logotipo */
+.eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+/* timecodes e dados técnicos usam números tabulares */
+.tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

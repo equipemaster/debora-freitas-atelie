@@ -1,0 +1,12 @@
+# Normaliza finais de linha para LF no repositório (evita ruído entre Windows/macOS/Linux).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary
+*.mov binary
