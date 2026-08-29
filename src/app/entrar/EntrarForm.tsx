@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { Button } from "@/components/ui/button";
@@ -10,12 +10,13 @@ import { t } from "@/lib/i18n";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function EntrarForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/painel";
-  const linkError = searchParams.get("erro") === "link_invalido";
 
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent) {
@@ -26,22 +27,23 @@ export function EntrarForm() {
       setError(t.auth.invalidEmail);
       return;
     }
+    if (!password) {
+      setError(t.auth.passwordRequired);
+      return;
+    }
 
     setStatus("sending");
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-      },
-    });
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
     if (signInError) {
       setStatus("error");
       setError(signInError.message);
       return;
     }
-    setStatus("sent");
+
+    router.push(next);
+    router.refresh();
   }
 
   return (
@@ -50,44 +52,42 @@ export function EntrarForm() {
         <Wordmark />
       </div>
 
-      {status === "sent" ? (
-        <div className="border border-dashed border-border p-8 text-center">
-          <p className="display text-xl">{t.auth.checkEmailTitle}</p>
-          <p className="mt-2 text-sm text-muted">{t.auth.checkEmailBody}</p>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <div>
+          <h1 className="display text-3xl">{t.auth.title}</h1>
+          <p className="mt-2 text-sm text-muted">{t.auth.subtitle}</p>
         </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div>
-            <h1 className="display text-3xl">{t.auth.title}</h1>
-            <p className="mt-2 text-sm text-muted">{t.auth.subtitle}</p>
-          </div>
 
-          {linkError ? (
-            <p className="border border-danger/40 bg-danger/5 p-3 text-sm text-danger">
-              {t.auth.linkInvalid}
-            </p>
-          ) : null}
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="eyebrow">{t.auth.emailLabel}</span>
+          <input
+            type="email"
+            autoComplete="email"
+            autoFocus
+            className="h-11 border border-border bg-background px-3 text-sm outline-none focus-visible:border-ink"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.auth.emailPlaceholder}
+          />
+        </label>
 
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="eyebrow">{t.auth.emailLabel}</span>
-            <input
-              type="email"
-              autoComplete="email"
-              autoFocus
-              className="h-11 border border-border bg-background px-3 text-sm outline-none focus-visible:border-ink"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t.auth.emailPlaceholder}
-            />
-          </label>
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="eyebrow">{t.auth.passwordLabel}</span>
+          <input
+            type="password"
+            autoComplete="current-password"
+            className="h-11 border border-border bg-background px-3 text-sm outline-none focus-visible:border-ink"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
 
-          {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? <p className="text-sm text-danger">{error}</p> : null}
 
-          <Button type="submit" size="lg" disabled={status === "sending"}>
-            {status === "sending" ? t.auth.sending : t.auth.sendLink}
-          </Button>
-        </form>
-      )}
+        <Button type="submit" size="lg" disabled={status === "sending"}>
+          {status === "sending" ? t.auth.signingIn : t.auth.signIn}
+        </Button>
+      </form>
     </div>
   );
 }

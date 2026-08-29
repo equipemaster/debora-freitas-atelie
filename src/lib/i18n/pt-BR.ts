@@ -149,19 +149,17 @@ export const ptBR = {
     renderFailed: "A exportação falhou. Veja os detalhes e tente de novo.",
   },
 
-  // Login sem senha (magic link) e bootstrap do primeiro acesso.
+  // Login com e-mail e senha, e bootstrap do primeiro acesso.
   auth: {
     title: "Entrar",
-    subtitle: "Digite seu e-mail. Enviamos um link de acesso — sem senha para lembrar.",
+    subtitle: "Digite seu e-mail e senha para acessar o painel do ateliê.",
     emailLabel: "E-mail",
     emailPlaceholder: "voce@seuemail.com",
-    sendLink: "Enviar link de acesso",
-    sending: "Enviando…",
-    checkEmailTitle: "Verifique seu e-mail",
-    checkEmailBody: "Enviamos um link de acesso. Abra-o neste mesmo navegador para entrar.",
+    passwordLabel: "Senha",
+    passwordRequired: "Digite sua senha.",
     invalidEmail: "Digite um e-mail válido.",
-    linkInvalid:
-      "Esse link não funcionou. Ele só é válido no mesmo navegador que pediu o acesso, uma única vez, e expira depois de um tempo. Peça um novo abaixo.",
+    signIn: "Entrar",
+    signingIn: "Entrando…",
     signOut: "Sair",
   },
 

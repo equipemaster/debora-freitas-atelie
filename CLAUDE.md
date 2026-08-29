@@ -372,19 +372,37 @@ pnpm lint        pnpm typecheck
 5. **Edição semi-automática:** o Modo Assistido pergunta **take** (quando há mais
    de uma gravação da mesma cena) e **música**, e monta a timeline sozinho — ver
    seção 7.
+6. **Login: e-mail e senha** (não link mágico). Tentamos passwordless primeiro,
+   mas o SMTP padrão do Supabase só entrega para endereços da própria equipe do
+   projeto e tem limite baixo (ver seção "Produção" abaixo) — a cliente pediu
+   para simplificar para login comum. `/entrar` valida e-mail + senha
+   (`signInWithPassword`); sem cadastro público — contas são criadas no painel
+   do Supabase (Authentication → Users) e entram na organização única via o
+   trigger de bootstrap (seção 5 / migrations 0003 e 0005).
+
+### Produção — e-mail transacional (pendente)
+
+O provedor de e-mail padrão do Supabase é só para teste (limite baixo, só
+manda para e-mails da equipe do projeto). Antes de usar `review_links`/
+convites por e-mail de verdade, configurar SMTP próprio (Resend recomendado)
+em Authentication → Emails → SMTP Settings. Guia: `/docs/guides/auth/auth-smtp`.
 
 ### Ainda em aberto
 
 1. **Deploy na Vercel:** conectar o repositório e configurar as env vars lá
    (mesmas de `.env.local`, sem a `service_role` no client).
-2. **Legendas automáticas:** provedor de transcrição não definido (Whisper/OpenAI?
+2. **SMTP de produção** (Resend ou similar) — ver caixa acima.
+3. **Convite de novas usuárias:** hoje só cria conta pelo painel do Supabase
+   (Authentication → Users). Uma tela de "convidar por e-mail" fica para
+   quando o SMTP de produção estiver pronto.
+4. **Legendas automáticas:** provedor de transcrição não definido (Whisper/OpenAI?
    modelo local?). Nenhum provedor de LLM foi escolhido ainda.
-3. **Versão preta do logo:** o arquivo enviado é branco sobre transparente; vou
+5. **Versão preta do logo:** o arquivo enviado é branco sobre transparente; vou
    derivar uma versão preta automaticamente (inversão) até receber a arte oficial
    da cliente. Fontes exatas da marca (Cormorant/Inter são proposta nossa).
-4. **Multi-organização** agora ou só schema preparado (schema já vem preparado).
-5. **Biblioteca de música** — licenciada por nós ou só upload da cliente.
-6. **Detecção de cena/take:** por enquanto, agrupamento sugerido por nome de
+6. **Multi-organização** agora ou só schema preparado (schema já vem preparado).
+7. **Biblioteca de música** — licenciada por nós ou só upload da cliente.
+8. **Detecção de cena/take:** por enquanto, agrupamento sugerido por nome de
    arquivo/horário de gravação (heurística simples). Análise de conteúdo do vídeo
    (visão computacional) fica como melhoria futura, fora do MVP.
 
@@ -403,7 +421,10 @@ pnpm lint        pnpm typecheck
 - [x] Fase 0 — Fundação: scaffold Next.js 16 + design system P&B + i18n +
       páginas de gestão (placeholders didáticos) + schema Supabase — feito por
       outra sessão em paralelo (`samsung-11`), coordenado com esta sessão.
+- [x] Login por e-mail/senha funcionando de ponta a ponta (testado com conta
+      real, `adm@atelie.com.br` como `owner`).
 - [ ] Deploy Vercel.
+- [ ] SMTP de produção (Resend).
 - [ ] Fase 1 — Biblioteca (upload real para Storage, CRUD de projetos/clientes).
 - [ ] `components/editor/*` (Timeline/Preview/MediaBin/GuidedMode) — em andamento
       por `samsung-11`.
