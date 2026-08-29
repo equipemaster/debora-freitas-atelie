@@ -12,6 +12,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function EntrarForm() {
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/painel";
+  const linkError = searchParams.get("erro") === "link_invalido";
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -60,6 +61,12 @@ export function EntrarForm() {
             <h1 className="display text-3xl">{t.auth.title}</h1>
             <p className="mt-2 text-sm text-muted">{t.auth.subtitle}</p>
           </div>
+
+          {linkError ? (
+            <p className="border border-danger/40 bg-danger/5 p-3 text-sm text-danger">
+              {t.auth.linkInvalid}
+            </p>
+          ) : null}
 
           <label className="flex flex-col gap-1 text-sm">
             <span className="eyebrow">{t.auth.emailLabel}</span>

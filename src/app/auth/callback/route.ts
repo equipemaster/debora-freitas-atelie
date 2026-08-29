@@ -18,6 +18,11 @@ export async function GET(request: Request) {
     if (!error) {
       return NextResponse.redirect(`${origin}${safeNext}`);
     }
+    // Log só no servidor — a causa mais comum é PKCE: o link só troca por
+    // sessão no MESMO navegador que pediu o acesso (o code_verifier fica
+    // num cookie local). Abrir em outro navegador/dispositivo, ou clicar
+    // duas vezes, ou o link ter expirado, todos caem aqui.
+    console.error("[auth/callback] exchangeCodeForSession falhou:", error.message);
   }
 
   return NextResponse.redirect(`${origin}/entrar?erro=link_invalido`);

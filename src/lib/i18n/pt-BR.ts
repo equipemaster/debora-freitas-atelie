@@ -160,6 +160,8 @@ export const ptBR = {
     checkEmailTitle: "Verifique seu e-mail",
     checkEmailBody: "Enviamos um link de acesso. Abra-o neste mesmo navegador para entrar.",
     invalidEmail: "Digite um e-mail válido.",
+    linkInvalid:
+      "Esse link não funcionou. Ele só é válido no mesmo navegador que pediu o acesso, uma única vez, e expira depois de um tempo. Peça um novo abaixo.",
     signOut: "Sair",
   },
 
