@@ -60,6 +60,42 @@ export const ptBR = {
       "Você ainda não criou nenhum projeto. Comece um agora — o assistente conduz cada etapa.",
   },
 
+  // CRUD de clientes/coleções/projetos (Fase 1) — formulários e listas.
+  management: {
+    clients: {
+      title: "Nova cliente",
+      name: "Nome",
+      email: "E-mail",
+      phone: "Telefone",
+      notes: "Notas",
+      empty: "Nenhuma cliente cadastrada ainda.",
+      create: "Adicionar cliente",
+      creating: "Adicionando…",
+    },
+    collections: {
+      title: "Nova coleção",
+      name: "Nome",
+      season: "Estação",
+      year: "Ano",
+      description: "Descrição",
+      empty: "Nenhuma coleção cadastrada ainda.",
+      create: "Criar coleção",
+      creating: "Criando…",
+    },
+    projects: {
+      title: "Novo projeto",
+      projectTitle: "Título do projeto",
+      kind: "Tipo",
+      client: "Cliente (opcional)",
+      collection: "Coleção (opcional)",
+      none: "Nenhuma",
+      empty: "Nenhum projeto ainda. Crie o primeiro abaixo.",
+      create: "Criar e abrir o assistente",
+      creating: "Criando…",
+      openEditor: "Abrir",
+    },
+  },
+
   // Modo Assistido — edição semi-automática por perguntas
   guided: {
     modeLabel: "Modo assistido",
